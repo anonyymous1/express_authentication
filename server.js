@@ -8,6 +8,9 @@ const { Session } = require('express-session');
 const SECRET_SESSION = process.env.SECRET_SESSION;
 const app = express();
 
+//isLoggedIn middleware
+const isLoggedIn = require('./middleware/isLoggedIn')
+
 app.set('view engine', 'ejs');
 
 app.use(require('morgan')('dev'));
