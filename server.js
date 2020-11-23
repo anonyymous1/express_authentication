@@ -1,6 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const layouts = require('express-ejs-layouts');
+const session = require('express-session');
+const passport = require('./config/ppConfig');
+const flash = require('connect-flash');
+const { Session } = require('express-session');
+const SECRET_SESSION = process.env.SECRET_SESSION;
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -9,6 +14,17 @@ app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
+
+//secret: What we actulaly giveing the user on our site as a session cookie
+//resave: saves the session even if its modified, make this flase from start
+//saveUninitlaized: if we have a new session, we save it, and therefore making that true.
+const sessionObject = {
+  secret: SECRET_SESSION,
+  resave: false,
+  saveUninitialized: true
+}
+
+app.use(session(sessionObject));
 
 app.get('/', (req, res) => {
   res.render('index');
